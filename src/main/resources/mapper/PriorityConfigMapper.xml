@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.mapper.PriorityConfigMapper">
+
+    <!-- 根据用户ID查询权重配置 -->
+    <select id="selectByUserId" resultType="com.schedule.entity.PriorityConfig">
+        SELECT * FROM priority_config
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 新增用户权重配置 -->
+    <insert id="insert">
+        INSERT INTO priority_config(user_id, urgency_weight, importance_weight,
+        deadline_weight, duration_weight, history_weight)
+        VALUES(#{userId}, #{urgencyWeight}, #{importanceWeight},
+        #{deadlineWeight}, #{durationWeight}, #{historyWeight})
+    </insert>
+
+    <!-- 更新用户权重配置 -->
+    <update id="update">
+        UPDATE priority_config
+        SET urgency_weight=#{urgencyWeight},
+        importance_weight=#{importanceWeight},
+        deadline_weight=#{deadlineWeight},
+        duration_weight=#{durationWeight},
+        history_weight=#{historyWeight}
+        WHERE user_id = #{userId}
+    </update>
+
+</mapper>

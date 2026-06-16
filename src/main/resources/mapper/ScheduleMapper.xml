@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.schedule.mapper.ScheduleMapper">
+
+    <!-- 按用户ID + 排序类型查询 -->
+    <select id="selectByUserId" resultType="com.schedule.entity.Schedule">
+        SELECT * FROM schedule WHERE user_id = #{userId}
+        <choose>
+            <when test="sortType == 1">
+                ORDER BY priority_score DESC
+            </when>
+            <when test="sortType == 2">
+                ORDER BY end_time ASC
+            </when>
+            <otherwise>
+                ORDER BY priority_score DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 按ID+用户ID查询单条 -->
+    <select id="selectByIdAndUserId" resultType="com.schedule.entity.Schedule">
+        SELECT * FROM schedule WHERE id = #{id} AND user_id = #{userId}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO schedule(user_id,title,content,start_time,end_time,location,type,tag,
+        importance,urgency,status,priority_score,repeat_rule)
+        VALUES(#{userId},#{title},#{content},#{startTime},#{endTime},#{location},#{type},#{tag},
+        #{importance},#{urgency},#{status},#{priorityScore},#{repeatRule})
+    </insert>
+
+    <!-- 修改：增加用户ID校验 -->
+    <update id="update">
+        UPDATE schedule SET title=#{title},content=#{content},start_time=#{startTime},end_time=#{endTime},
+        importance=#{importance},urgency=#{urgency},priority_score=#{priorityScore},status=#{status}
+        WHERE id=#{id} AND user_id=#{userId}
+    </update>
+
+    <!-- 删除：增加用户ID校验 -->
+    <delete id="deleteByIdAndUserId">
+        DELETE FROM schedule WHERE id=#{id} AND user_id=#{userId}
+    </delete>
+
+</mapper>
